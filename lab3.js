@@ -15,46 +15,31 @@ var app = connect();
  */
 var Calculator = function(req, res, next)
 {
-    var qsMethod = url.parse(req.url, true).query;
-    var X = url.parse(req.url, true).query;
-    var Y = url.parse(req.url, true).query;
+    var qs = url.parse(req.url, true).query;
 
     // storing parsed qs in variables.
-    var method = qsMethod.method;
-    var x = qsX.x;
-    var y = qsY.y;
+    var method = qs.method;
+    var x = Number(qs.x);
+    var y = Number(qs.y);
 
     res.end(calcMethod(method, x, y));
 };
 
 var calcMethod = function(method, x, y){
 
-    var add = Number(x) + Number(y);
-    var subtract = Number(x) - Number(y);
-
-    if(method == 'add')
-    {
-        return 'Calculating your output\nOutput: ' + x + ' + ' + y + ' = ' + add;
+    switch (method) {
+        case 'add':
+            return 'Calculating your output\nOutput: ' + x + ' + ' + y + ' = ' + (x+y);
+        case 'subtract':
+            return 'Calculating your output\nOutput: ' + x + ' - ' + y + ' = ' + (x-y);
+        case 'divide':
+            return 'Calculating your output\nOutput: ' + x + ' / ' + y + ' = ' + (x/y);
+        case 'multiply':
+            return 'Calculating your output\nOutput: ' + x + ' * ' + y + ' = ' + (x*y);
+        default:
+            return'The method name you entered is not valid.\nPlease enter either: add, subtract, divide, or multiply.';
     }
 
-    if(method == 'subtract')
-    {
-        return 'Calculating your output\nOutput: ' + x + ' - ' + y + ' = ' + subtract;
-    }
-
-    if(method == 'divide')
-    {
-        return 'Calculating your output\nOutput: ' + x + ' / ' + y + ' = ' + x/y;
-    }
-
-    if(method == 'multiply')
-    {
-        return 'Calculating your output\nOutput: ' + x + ' * ' + y + ' = ' + x*y;
-    }
-
-    else {
-        return'The method name you entered is not valid.\nPlease enter either: add, subtract, divide, or multiply.';
-    }
 };
 
 app.use('/lab3', Calculator);
